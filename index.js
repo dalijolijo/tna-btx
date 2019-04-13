@@ -1,5 +1,5 @@
 require('dotenv').config()
-const bch = require('bitcore-lib-cash')
+const btx = require('bitcore-lib-btx')
 const RpcClient = require('bitcoind-rpc');
 var fromHash = function(hash, config) {
   let c;
@@ -9,9 +9,9 @@ var fromHash = function(hash, config) {
     c = {
       protocol: 'http',
       user: process.env.rpc_user ? process.env.rpc_user : 'root',
-      pass: process.env.rpc_pass ? process.env.rpc_pass : 'bitcoin',
+      pass: process.env.rpc_pass ? process.env.rpc_pass : 'bitcore',
       host: process.env.rpc_host ? process.env.rpc_host : '127.0.0.1',
-      port: process.env.rpc_port ? process.env.rpc_port : '8332',
+      port: process.env.rpc_port ? process.env.rpc_port : '8556',
     }
   }
   
@@ -63,7 +63,7 @@ var fromGene = function(gene, options) {
             h: input.prevTxId.toString('hex'),
             i: input.outputIndex
           }
-          let address = input.script.toAddress(bch.Networks.livenet).toString(bch.Address.CashAddrFormat).split(':')[1];
+          let address = input.script.toAddress(btx.Networks.livenet).toString(btx.Address.CashAddrFormat).split(':')[1];
           if (address && address.length > 0) {
             sender.a = address;
           }
@@ -102,7 +102,7 @@ var fromGene = function(gene, options) {
             v: output.satoshis,
             i: output_index
           }
-          let address = output.script.toAddress(bch.Networks.livenet).toString(bch.Address.CashAddrFormat).split(':')[1];
+          let address = output.script.toAddress(btx.Networks.livenet).toString(btx.Address.CashAddrFormat).split(':')[1];
           if (address && address.length > 0) {
             receiver.a = address;
           }
@@ -119,7 +119,7 @@ var fromGene = function(gene, options) {
   })
 }
 var fromTx = function(transaction, options) {
-    return fromGene(new bch.Transaction(transaction), options);
+    return fromGene(new btx.Transaction(transaction), options);
 }
 
 module.exports = {
